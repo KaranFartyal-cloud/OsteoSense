@@ -1,0 +1,30 @@
+# Localization configuration for JointSaathi
+# Add this to your pubspec.yaml file in the flutter section
+
+flutter:
+  # ... other configuration ...
+
+  # Enable localization
+  generate: true
+
+  # Assets for localization files
+  assets:
+    - assets/l10n/
+
+  # Fonts and other assets
+  # ... rest of your configuration ...
+
+# Add flutter_localizations and intl to dependencies in pubspec.yaml:
+#
+# dependencies:
+#   flutter:
+#     sdk: flutter
+#   flutter_localizations:
+#     sdk: flutter
+#   intl: ^0.19.0  # For date/time formatting
+#   # ... other dependencies ...
+#
+# dev_dependencies:
+#   flutter_test:
+#     sdk: flutter
+#   # ... other dev dependencies ...

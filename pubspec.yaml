@@ -1,0 +1,103 @@
+name: joint_saathi
+description: AI-assisted early detection app for Osteoarthritis risk screening for healthcare workers in rural/remote NER of India.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # State Management
+  provider: ^6.1.1
+  
+  # Routing
+  go_router: ^13.0.0
+  
+  # Local Database
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  
+  # Network
+  dio: ^5.4.0
+  connectivity_plus: ^5.0.2
+  
+  # AI/ML
+  tflite_flutter: ^0.12.1
+  
+  # Sensors
+  sensors_plus: ^4.0.2
+  
+  # BLE
+  flutter_blue_plus: ^1.31.5
+  
+  # Charts
+  fl_chart: ^0.66.0
+  
+  # PDF
+  pdf: ^3.10.7
+  printing: ^5.11.0
+  
+  # Localization
+  flutter_localizations:
+    sdk: flutter
+  intl: 0.20.3
+  
+  # Notifications
+  flutter_local_notifications: ^17.0.0
+  
+  # Images
+  cached_network_image: ^3.3.0
+  
+  # UI/Animation Premium Dependencies
+  google_fonts: ^6.1.0
+  lottie: ^3.0.0
+  shimmer: ^3.0.0
+  flutter_animate: ^4.3.0
+  flutter_svg: ^2.0.9
+  smooth_page_indicator: ^1.1.0
+  flutter_staggered_animations: ^1.0.0
+  
+  # Maps
+  geolocator: ^10.1.0
+  google_maps_flutter: ^2.5.3
+  
+  # Storage
+  shared_preferences: ^2.2.2
+  
+  # Icons & Splash
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.9
+  
+  # UI Utilities
+  cupertino_icons: ^1.0.6
+  permission_handler: ^11.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+  
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/models/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/app_icon.png"
+  adaptive_icon_background: "#009688"
+  adaptive_icon_foreground: "assets/icons/app_icon.png"
+
+flutter_native_splash:
+  color: "#009688"
+  image: assets/icons/splash_icon.png
+  android: true
+  ios: true
