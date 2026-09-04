@@ -44,5 +44,13 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Build artifacts - large files
+/android/app/build/
+**/build/
+*.apk
+*.aab
+*.so
+*.bin
+
 # Widget Preview related
 .widget_preview/
