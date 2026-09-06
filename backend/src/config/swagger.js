@@ -1,50 +1,50 @@
-'use strict';
+"use strict";
 
-const swaggerJsdoc = require('swagger-jsdoc');
-const env = require('./env');
+const swaggerJsdoc = require("swagger-jsdoc");
+const env = require("./env");
 
 const options = {
   definition: {
-    openapi: '3.0.3',
+    openapi: "3.0.3",
     info: {
-      title: 'JointSaathi API',
-      version: '1.0.0',
+      title: "JointSaathi API",
+      version: "1.0.0",
       description:
-        'AI-assisted Osteoarthritis (OA) risk screening backend for healthcare ' +
-        'workers conducting field screenings in rural health camps across the ' +
-        'North Eastern Region (NER) of India. Built for Smart India Hackathon ' +
-        '(MDoNER problem statement).',
+        "AI-assisted Osteoarthritis (OA) risk screening backend for healthcare " +
+        "workers conducting field screenings in rural health camps across the " +
+        "North Eastern Region (NER) of India. Built for Smart India Hackathon " +
+        "(MDoNER problem statement).",
       contact: {
-        name: 'JointSaathi Team',
+        name: "JointSaathi Team",
       },
     },
     servers: [
       {
         url: `http://localhost:${env.PORT}/api/v1`,
-        description: 'Local development server',
+        description: "Local development server",
       },
     ],
     components: {
       securitySchemes: {
         bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
         },
       },
       schemas: {
         ApiError: {
-          type: 'object',
+          type: "object",
           properties: {
-            success: { type: 'boolean', example: false },
-            message: { type: 'string', example: 'Invalid credentials' },
+            success: { type: "boolean", example: false },
+            message: { type: "string", example: "Invalid credentials" },
             errors: {
-              type: 'array',
+              type: "array",
               items: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  field: { type: 'string' },
-                  message: { type: 'string' },
+                  field: { type: "string" },
+                  message: { type: "string" },
                 },
               },
             },
@@ -54,7 +54,7 @@ const options = {
     },
     security: [{ bearerAuth: [] }],
   },
-  apis: ['./src/routes/*.js'],
+  apis: ["./src/routes/*.js"],
 };
 
 module.exports = swaggerJsdoc(options);

@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
 
@@ -8,7 +8,7 @@ const preventiveCareSchema = new Schema(
   {
     category: {
       type: String,
-      enum: ['exercises', 'diet', 'lifestyle'],
+      enum: ["exercises", "diet", "lifestyle"],
       required: true,
       index: true,
     },
@@ -26,8 +26,8 @@ const preventiveCareSchema = new Schema(
     },
     language: {
       type: String,
-      enum: ['en', 'hi'],
-      default: 'en',
+      enum: ["en", "hi"],
+      default: "en",
       index: true,
     },
   },
@@ -41,7 +41,7 @@ const preventiveCareSchema = new Schema(
         return ret;
       },
     },
-  }
+  },
 );
 
-module.exports = mongoose.model('PreventiveCare', preventiveCareSchema);
+module.exports = mongoose.model("PreventiveCare", preventiveCareSchema);

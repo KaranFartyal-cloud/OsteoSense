@@ -1,19 +1,19 @@
-'use strict';
+"use strict";
 
-const express = require('express');
-const { z } = require('zod');
-const syncController = require('../controllers/syncController');
-const validate = require('../middleware/validate');
-const authMiddleware = require('../middleware/authMiddleware');
+const express = require("express");
+const { z } = require("zod");
+const syncController = require("../controllers/syncController");
+const validate = require("../middleware/validate");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 router.use(authMiddleware);
 
 const syncItemSchema = z.object({
-  type: z.enum(['patient', 'screening']),
+  type: z.enum(["patient", "screening"]),
   localId: z.string().min(1),
-  action: z.enum(['create', 'update']),
+  action: z.enum(["create", "update"]),
   data: z.record(z.any()),
 });
 
@@ -40,7 +40,7 @@ const batchSyncSchema = z.object({
  *       200:
  *         description: Per-item sync results (partial failures allowed)
  */
-router.post('/batch', validate(batchSyncSchema), syncController.batchSync);
+router.post("/batch", validate(batchSyncSchema), syncController.batchSync);
 
 /**
  * @swagger
@@ -54,6 +54,6 @@ router.post('/batch', validate(batchSyncSchema), syncController.batchSync);
  *       200:
  *         description: Sync status
  */
-router.get('/status', syncController.getSyncStatus);
+router.get("/status", syncController.getSyncStatus);
 
 module.exports = router;

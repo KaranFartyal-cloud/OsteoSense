@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-const mongoose = require('mongoose');
-const ApiError = require('../utils/ApiError');
-const logger = require('../utils/logger');
-const env = require('../config/env');
+const mongoose = require("mongoose");
+const ApiError = require("../utils/ApiError");
+const logger = require("../utils/logger");
+const env = require("../config/env");
 
 /**
  * Centralized error handler. MUST be the last middleware registered in app.js.
@@ -13,7 +13,7 @@ const env = require('../config/env');
 // eslint-disable-next-line no-unused-vars
 function errorHandler(err, req, res, _next) {
   let statusCode = 500;
-  let message = 'Internal server error';
+  let message = "Internal server error";
   let errors = [];
 
   if (err instanceof ApiError) {
@@ -22,7 +22,7 @@ function errorHandler(err, req, res, _next) {
     errors = err.errors || [];
   } else if (err instanceof mongoose.Error.ValidationError) {
     statusCode = 400;
-    message = 'Validation failed';
+    message = "Validation failed";
     errors = Object.values(err.errors).map((e) => ({
       field: e.path,
       message: e.message,
@@ -34,12 +34,17 @@ function errorHandler(err, req, res, _next) {
   } else if (err.code === 11000) {
     // Mongo duplicate key error
     statusCode = 409;
-    const field = Object.keys(err.keyPattern || err.keyValue || { field: 1 })[0];
+    const field = Object.keys(
+      err.keyPattern || err.keyValue || { field: 1 },
+    )[0];
     message = `A record with this ${field} already exists`;
-    errors = [{ field, message: 'Duplicate value' }];
-  } else if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+    errors = [{ field, message: "Duplicate value" }];
+  } else if (
+    err.name === "JsonWebTokenError" ||
+    err.name === "TokenExpiredError"
+  ) {
     statusCode = 401;
-    message = 'Invalid or expired token';
+    message = "Invalid or expired token";
   }
 
   // Always log the full error server-side, regardless of what's sent to the client.
