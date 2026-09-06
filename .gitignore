@@ -66,3 +66,4 @@ ios/.symlinks/
 # Environment/secrets
 .env
 .env.local
+backend/.env*

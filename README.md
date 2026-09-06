@@ -1,287 +1,220 @@
-# JointSaathi - AI-Assisted Osteoarthritis Risk Screening App
+# JointSaathi
 
-JointSaathi is an AI-assisted early detection app for Osteoarthritis (OA) risk screening, designed specifically for healthcare workers in rural and remote areas of the North Eastern Region (NER) of India. The app is offline-first, multilingual, and optimized for low-connectivity environments.
+AI-assisted osteoarthritis (OA) risk screening for healthcare workers in rural
+and remote areas of India's North Eastern Region.
 
-## Features
+JointSaathi is designed as an offline-first, multilingual mobile app. It helps
+healthcare workers record patient information, conduct symptom and gait
+screenings, review AI-assisted risk assessments, and synchronize data when a
+network connection is available.
 
-- **Offline-First Architecture**: Works completely without internet, syncs data when connection is available
-- **AI-Powered Risk Assessment**: On-device TFLite model for OA risk classification
-- **Gait Analysis**: Uses phone sensors (accelerometer, gyroscope) to analyze movement patterns
-- **Multilingual Support**: English and Hindi with easy extensibility for regional NER languages
-- **PDF Report Generation**: Generate and share professional screening reports
-- **Patient Management**: Complete patient database with screening history
-- **Healthcare Worker Authentication**: Secure login/signup for healthcare workers
-- **Automatic Sync**: Queues offline data and syncs when internet is available
-- **Clean UI**: Simple, accessible interface designed for rural healthcare workers
+> **Medical disclaimer:** JointSaathi is a screening and decision-support tool,
+> not a diagnostic device. Clinical decisions must be made by qualified
+> healthcare professionals.
 
-## Tech Stack
+## Highlights
 
-- **Framework**: Flutter (Dart) - Single codebase for iOS + Android
-- **State Management**: Provider
-- **Local Database**: SQLite (sqflite)
-- **Network**: Dio
-- **Connectivity**: connectivity_plus
-- **AI/ML**: tflite_flutter
-- **Sensors**: sensors_plus
-- **BLE**: flutter_blue_plus (for future wearable integration)
-- **Charts**: fl_chart
-- **PDF**: pdf, printing
-- **Localization**: flutter_localizations, intl
-- **Notifications**: flutter_local_notifications
+- Offline-first patient and screening workflows
+- On-device TFLite OA risk assessment
+- Phone-sensor gait analysis using the accelerometer and gyroscope
+- English and Hindi localization
+- Risk results with confidence, contributing factors, and recommendations
+- PDF report generation and sharing
+- Local SQLite storage with online synchronization
+- Healthcare worker authentication
+- Optional BLE wearable integration groundwork
 
-## Project Structure
+## Repository layout
 
-```
-app/
-└── lib/
-    ├── l10n/             # Localization files (English, Hindi)
-    ├── models/           # Data models (Patient, Screening, User, etc.)
-    ├── providers/        # State management providers
-    ├── screens/          # UI screens
-│   ├── auth/            # Authentication screens
-│   ├── home/            # Home dashboard
-│   ├── patients/        # Patient management
-│   ├── screening/       # Screening flow
-│   ├── results/         # Results and reports
-│   ├── settings/        # Settings and utilities
-│   ├── awareness/       # Preventive care content
-│   └── analytics/       # Analytics dashboard
-├── services/         # Business logic services
-│   ├── database_helper.dart
-│   ├── tflite_service.dart
-│   ├── sensor_service.dart
-│   ├── sync_service.dart
-│   └── pdf_service.dart
-├── utils/            # Utilities and constants
-│   ├── app_theme.dart
-│   ├── constants.dart
-│   └── app_localizations.dart
-└── widgets/          # Reusable widgets
+```text
+.
+├── app/                  # Flutter mobile application
+│   ├── lib/              # Dart source, screens, services, models, widgets
+│   ├── assets/           # Images, icons, and TFLite model
+│   ├── android/          # Android project
+│   ├── ios/              # iOS project
+│   ├── test/              # Flutter tests
+│   └── pubspec.yaml
+├── backend/              # Node.js API and data services
+└── ai_service/           # Python AI microservice
 ```
 
-## Prerequisites
+## Technology
 
-- Flutter SDK (>=3.0.0)
-- Dart SDK (>=3.0.0)
-- Android Studio / Xcode
-- For Android: Android SDK with API level 21+
-- For iOS: Xcode 14+ with iOS 12+
+### Mobile app
 
-## Installation
+- Flutter and Dart
+- Provider and GoRouter
+- SQLite (`sqflite`)
+- Dio and `connectivity_plus`
+- TensorFlow Lite (`tflite_flutter`)
+- `sensors_plus` and `flutter_blue_plus`
+- `fl_chart`, `pdf`, and `printing`
+- Flutter localization and `intl`
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd OsteoSense\app
-   ```
+### Backend services
 
-2. **Install dependencies**
-   ```bash
-   flutter pub get
-   ```
+- Node.js with Express
+- MongoDB
+- JWT authentication
+- Python FastAPI AI service
 
-3. **Set up assets**
-   - Replace placeholder icons in `app/assets/icons/` with actual app icons
-   - Add actual images to `app/assets/images/`
-   - Place your trained TFLite model in `app/assets/models/oa_risk_model.tflite`
+## Requirements
 
-4. **Generate app icons and splash screen**
-   ```bash
-   flutter pub run flutter_launcher_icons
-   flutter pub run flutter_native_splash
-   ```
+- Flutter SDK 3.0 or newer
+- Dart SDK 3.0 or newer
+- Android Studio and Android SDK (API 21+)
+- Xcode 14 or newer for iOS development
+- Node.js 18 or newer for the backend
+- Python 3.10 or newer for the AI service
+- MongoDB for backend development
 
-5. **Run the app**
-   ```bash
-   # For Android
-   cd app
-   flutter run
+## Getting started
 
-   # For iOS
-   cd app
-   flutter run
-   ```
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/binoremohapatra/OsteoSense.git
+cd OsteoSense
+```
+
+### 2. Run the Flutter app
+
+```bash
+cd app
+flutter pub get
+flutter run
+```
+
+To run on a specific device:
+
+```bash
+flutter devices
+flutter run -d <device-id>
+```
+
+The app assets are already configured in `app/pubspec.yaml`. Place a compatible
+model at `app/assets/models/oa_risk_model.tflite` when using a custom model.
+
+### 3. Run the backend
+
+Create `backend/.env` locally and configure the server, MongoDB, JWT secrets,
+AI service URL, CORS origins, and rate limits. Do not commit this file or any
+other environment file.
+
+```bash
+cd backend
+npm install
+npm start
+```
+
+### 4. Run the AI service
+
+```bash
+cd ai_service
+python -m venv .venv
+# Windows
+.venv\Scripts\activate
+# macOS/Linux
+source .venv/bin/activate
+pip install -r requirements.txt
+python main.py
+```
+
+## Main workflow
+
+1. Select a language and complete onboarding.
+2. Sign in or create a healthcare worker account.
+3. Add or select a patient.
+4. Complete the symptom questionnaire.
+5. Run the guided gait test.
+6. Review the AI-assisted risk result and recommendations.
+7. Generate a report and sync data when online.
 
 ## Configuration
 
-### TFLite Model
+### Mobile app
 
-The app uses a TFLite model for on-device AI risk classification. To use your own model:
+- API configuration: `app/lib/utils/constants.dart`
+- Localization files: `app/lib/l10n/`
+- TFLite integration: `app/lib/services/tflite_service.dart`
+- Android permissions: `app/android/app/src/main/AndroidManifest.xml`
+- iOS permissions: `app/ios/Runner/Info.plist`
 
-1. Place your `.tflite` model file in `assets/models/oa_risk_model.tflite`
-2. Update the model input/output dimensions in `lib/services/tflite_service.dart`
-3. Ensure the model accepts the feature vector format provided by the service
+### Backend
 
-### Backend API
+The backend reads configuration from environment variables in `backend/.env`.
+Use strong, unique JWT secrets outside local development. Never store secrets
+in source control.
 
-The app is configured to sync with a backend when online. Update the API configuration:
+## Development commands
 
-- Edit `lib/utils/constants.dart` to set your `baseUrl`
-- Configure authentication in `lib/services/sync_service.dart`
+Run these from the relevant project directory:
 
-### Permissions
+```bash
+# Flutter
+cd app
+flutter analyze
+flutter test
 
-The app requires the following permissions:
+# Backend
+cd backend
+npm test
+```
 
-**Android** (configured in `android/app/src/main/AndroidManifest.xml`):
-- Internet and network state
-- Body sensors (for gait analysis)
-- Storage (for PDF reports)
-- Bluetooth (for future wearable integration)
-- Location (for Bluetooth scanning)
-- Notifications
+## Localization
 
-**iOS** (configured in `ios/Runner/Info.plist`):
-- Motion sensors
-- Bluetooth
-- Location
-- Photo library
+English and Hindi translations live in `app/lib/l10n/`. To add a language:
 
-## Usage
-
-### For Healthcare Workers
-
-1. **First-Time Setup**
-   - Open the app and select your preferred language (English/Hindi)
-   - Complete the onboarding slides
-   - Sign up with your details (name, phone, health center ID, location)
-
-2. **Adding Patients**
-   - Navigate to the Patients tab
-   - Tap the + button to add a new patient
-   - Fill in patient details (name, age, gender, contact, village, occupation)
-
-3. **Conducting Screening**
-   - Go to the Screening tab
-   - Select an existing patient or add a new one
-   - Complete the symptom questionnaire:
-     - Pain level (0-10)
-     - Morning stiffness duration
-     - Joint swelling (yes/no)
-     - Past injury history
-   - Perform gait test:
-     - Follow on-screen instructions
-     - Hold phone steady while patient walks
-     - Recording stops automatically after 30 seconds
-   - Review collected data
-   - Submit for AI analysis
-
-4. **Viewing Results**
-   - Risk level displayed (Low/Medium/High) with color coding
-   - Confidence percentage
-   - Contributing factors identified by AI
-   - Doctor recommendations based on risk level
-   - Generate PDF report for sharing/printing
-
-5. **Managing Data**
-   - View all screenings in Reports tab
-   - Filter patients by risk level
-   - View patient profiles with screening history
-   - Sync data when internet is available
-
-### For Developers
-
-**Adding New Languages**
-
-1. Create a new ARB file in `app/lib/l10n/` (e.g., `app_as.arb` for Assamese)
-2. Add translations following the format in `app_en.arb`
-3. Update `app/lib/utils/app_localizations.dart` to include the new locale
-4. Add the locale to the supported locales in `app/lib/main.dart`
-
-**Extending the AI Model**
-
-The TFLite service provides a fallback rule-based prediction when no model is available. To improve AI accuracy:
-
-1. Train a model on OA screening data
-2. Export to TFLite format
-3. Update input preprocessing in `tflite_service.dart`
-4. Test the model with sample data
-
-**Adding New Screening Parameters**
-
-1. Update the `Screening` model in `lib/models/screening.dart`
-2. Add UI fields in `lib/screens/screening/symptom_questionnaire_screen.dart`
-3. Update the feature vector in `lib/services/tflite_service.dart`
-4. Modify the database schema if needed
-
-## Offline Architecture
-
-The app is designed to work completely offline:
-
-1. **Local Storage**: All patient data and screenings saved in SQLite
-2. **Sync Queue**: Changes queued when offline
-3. **Auto-Sync**: Automatically syncs when internet becomes available
-4. **Conflict Resolution**: Last-write-wins for now, can be enhanced
+1. Add an ARB file such as `app/lib/l10n/app_as.arb`.
+2. Follow the keys and metadata in `app_en.arb`.
+3. Add the locale to the supported locales in `app/lib/main.dart`.
+4. Regenerate Flutter localization output if required.
 
 ## Troubleshooting
 
-**App crashes on startup**
-- Ensure all dependencies are installed: `flutter pub get`
-- Check that asset files exist in the specified paths
-- Verify Android/iOS permissions are properly configured
+### Flutter dependencies fail
 
-**TFLite model not loading**
-- Verify the model file exists in `assets/models/`
-- Check that the model format is compatible with tflite_flutter
-- Review model input/output dimensions in the service
+Run `flutter clean`, then `flutter pub get` from `app/`.
 
-**Sensors not working**
-- Ensure sensor permissions are granted
-- Check that the device has the required sensors
-- Test on a physical device (sensors may not work on emulator)
+### The TFLite model does not load
 
-**Sync not working**
-- Verify backend API is accessible
-- Check network connectivity
-- Review sync service logs for errors
+Confirm the model exists at `app/assets/models/oa_risk_model.tflite`, is
+included in `app/pubspec.yaml`, and matches the input/output dimensions expected
+by the TFLite service.
 
-## Future Enhancements
+### Sensors do not work
 
-- [ ] Add regional NER languages (Assamese, Bengali, etc.)
-- [ ] Integrate wearable sensors via BLE
-- [ ] Add analytics dashboard for administrators
-- [ ] Implement telemedicine consultation features
-- [ ] Add voice input for rural healthcare workers
-- [ ] Create doctor portal for remote consultations
-- [ ] Add medication reminders
-- [ ] Implement video tutorials for exercises
+Sensor and Bluetooth behavior may be limited on emulators. Test gait analysis
+on a physical device and verify the required permissions.
+
+### Backend synchronization fails
+
+Check that MongoDB, the backend, and the AI service are running. Then verify
+the API URL, CORS origins, authentication secrets, and network connectivity.
+
+## Future improvements
+
+- Regional NER languages such as Assamese and Bengali
+- Wearable sensor integration
+- Doctor and administrator portals
+- Telemedicine consultation support
+- Voice input and educational video content
+- Medication reminders
 
 ## Contributing
 
-Contributions are welcome! Please follow these guidelines:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly on both Android and iOS
-5. Submit a pull request
+1. Create a feature branch.
+2. Make focused changes.
+3. Run the relevant tests and analyzer.
+4. Open a pull request with a clear description.
 
 ## License
 
-This project is part of the MDoNER initiative for healthcare in North Eastern India.
+This project is part of the MDoNER initiative for healthcare in North Eastern
+India.
 
 ## Support
 
-For support and queries:
 - Email: support@jointsaathi.com
 - Helpline: 1800-XXX-XXXX
-
-## Team Credits
-
-- **Development Team**: JointSaathi Development
-- **AI/ML Team**: TFLite Model Development
-- **Healthcare Advisors**: Medical Consultation
-- **NER Healthcare Initiative**: MDoNER Support
-
-## Acknowledgments
-
-- Ministry of Development of North Eastern Region (MDoNER)
-- Healthcare workers in rural NER for their valuable feedback
-- Open-source Flutter community
-
----
-
-**Version**: 1.0.0  
-**Last Updated**: September 2024
-#   O s t e o S e n s e  
- 
