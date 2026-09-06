@@ -32,11 +32,12 @@ JointSaathi is an AI-assisted early detection app for Osteoarthritis (OA) risk s
 ## Project Structure
 
 ```
-lib/
-├── l10n/                 # Localization files (English, Hindi)
-├── models/               # Data models (Patient, Screening, User, etc.)
-├── providers/            # State management providers
-├── screens/             # UI screens
+app/
+└── lib/
+    ├── l10n/             # Localization files (English, Hindi)
+    ├── models/           # Data models (Patient, Screening, User, etc.)
+    ├── providers/        # State management providers
+    ├── screens/          # UI screens
 │   ├── auth/            # Authentication screens
 │   ├── home/            # Home dashboard
 │   ├── patients/        # Patient management
@@ -45,17 +46,17 @@ lib/
 │   ├── settings/        # Settings and utilities
 │   ├── awareness/       # Preventive care content
 │   └── analytics/       # Analytics dashboard
-├── services/            # Business logic services
+├── services/         # Business logic services
 │   ├── database_helper.dart
 │   ├── tflite_service.dart
 │   ├── sensor_service.dart
 │   ├── sync_service.dart
 │   └── pdf_service.dart
-├── utils/               # Utilities and constants
+├── utils/            # Utilities and constants
 │   ├── app_theme.dart
 │   ├── constants.dart
 │   └── app_localizations.dart
-└── widgets/             # Reusable widgets
+└── widgets/          # Reusable widgets
 ```
 
 ## Prerequisites
@@ -71,7 +72,7 @@ lib/
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd OsteoSense
+   cd OsteoSense\app
    ```
 
 2. **Install dependencies**
@@ -80,9 +81,9 @@ lib/
    ```
 
 3. **Set up assets**
-   - Replace placeholder icons in `assets/icons/` with actual app icons
-   - Add actual images to `assets/images/`
-   - Place your trained TFLite model in `assets/models/oa_risk_model.tflite`
+   - Replace placeholder icons in `app/assets/icons/` with actual app icons
+   - Add actual images to `app/assets/images/`
+   - Place your trained TFLite model in `app/assets/models/oa_risk_model.tflite`
 
 4. **Generate app icons and splash screen**
    ```bash
@@ -93,9 +94,11 @@ lib/
 5. **Run the app**
    ```bash
    # For Android
+   cd app
    flutter run
 
    # For iOS
+   cd app
    flutter run
    ```
 
@@ -180,10 +183,10 @@ The app requires the following permissions:
 
 **Adding New Languages**
 
-1. Create a new ARB file in `lib/l10n/` (e.g., `app_as.arb` for Assamese)
+1. Create a new ARB file in `app/lib/l10n/` (e.g., `app_as.arb` for Assamese)
 2. Add translations following the format in `app_en.arb`
-3. Update `lib/utils/app_localizations.dart` to include the new locale
-4. Add the locale to the supported locales in `lib/main.dart`
+3. Update `app/lib/utils/app_localizations.dart` to include the new locale
+4. Add the locale to the supported locales in `app/lib/main.dart`
 
 **Extending the AI Model**
 
