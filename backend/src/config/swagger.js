@@ -20,7 +20,7 @@ const options = {
     },
     servers: [
       {
-        url: `http://localhost:${env.PORT}/api/v1`,
+        url: `https://osteosense.onrender.com/api/v1`,
         description: "Local development server",
       },
     ],
