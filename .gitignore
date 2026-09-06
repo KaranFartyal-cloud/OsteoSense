@@ -55,5 +55,20 @@ app.*.map.json
 # Widget Preview related
 .widget_preview/
 
+
 .env
 node_modules/
+
+# Android local config (machine-specific)
+android/local.properties
+android/.gradle/
+
+# iOS Pods (regenerated on build)
+ios/Pods/
+ios/.symlinks/
+
+# Environment/secrets
+.env
+.env.local
+backend/.env*
+
