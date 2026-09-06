@@ -1,6 +1,4 @@
 import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
-import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 
 class TFLiteService {
@@ -132,8 +130,9 @@ class TFLiteService {
 
     // Pain level contribution (0-10)
     riskScore += painLevel * 0.3;
-    if (painLevel >= 7) factors.add('High pain level');
-    else if (painLevel >= 4) factors.add('Moderate pain level');
+    if (painLevel >= 7) {
+      factors.add('High pain level');
+    } else if (painLevel >= 4) factors.add('Moderate pain level');
 
     // Stiffness duration contribution
     final stiffnessMinutes = _parseStiffnessDuration(stiffnessDuration);

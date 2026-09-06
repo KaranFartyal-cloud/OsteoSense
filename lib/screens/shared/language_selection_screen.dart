@@ -7,7 +7,6 @@ import '../../theme/app_colors.dart';
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
 import '../../widgets/common/custom_card.dart';
-import 'role_selection_screen.dart';
 
 class LanguageSelectionScreen extends StatelessWidget {
   const LanguageSelectionScreen({super.key});
@@ -27,11 +26,11 @@ class LanguageSelectionScreen extends StatelessWidget {
               Container(
                 width: 80,
                 height: 80,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: AppColors.primarySurface,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.language,
                   size: 40,
                   color: AppColors.primary,
@@ -134,7 +133,7 @@ class LanguageSelectionScreen extends StatelessWidget {
               ),
             ),
           ),
-          Icon(
+          const Icon(
             Icons.arrow_forward_ios,
             color: AppColors.primary,
             size: 20,

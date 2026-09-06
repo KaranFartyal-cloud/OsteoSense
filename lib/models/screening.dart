@@ -1,5 +1,6 @@
 class Screening {
   final int? id;
+  final String? serverId;
   final int patientId;
   final int userId;
   final DateTime screeningDate;
@@ -17,6 +18,7 @@ class Screening {
 
   Screening({
     this.id,
+    this.serverId,
     required this.patientId,
     required this.userId,
     DateTime? screeningDate,
@@ -36,6 +38,7 @@ class Screening {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'server_id': serverId,
       'patient_id': patientId,
       'user_id': userId,
       'screening_date': screeningDate.toIso8601String(),
@@ -56,6 +59,7 @@ class Screening {
   factory Screening.fromMap(Map<String, dynamic> map) {
     return Screening(
       id: map['id'] as int?,
+      serverId: map['server_id'] as String?,
       patientId: map['patient_id'] as int,
       userId: map['user_id'] as int,
       screeningDate: DateTime.parse(map['screening_date'] as String),
@@ -75,6 +79,7 @@ class Screening {
 
   Screening copyWith({
     int? id,
+    String? serverId,
     int? patientId,
     int? userId,
     DateTime? screeningDate,
@@ -92,6 +97,7 @@ class Screening {
   }) {
     return Screening(
       id: id ?? this.id,
+      serverId: serverId ?? this.serverId,
       patientId: patientId ?? this.patientId,
       userId: userId ?? this.userId,
       screeningDate: screeningDate ?? this.screeningDate,

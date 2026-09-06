@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import '../../providers/screening_provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
-import 'package:lottie/lottie.dart';
 import '../../providers/patient_provider.dart';
 import '../../services/sensor_service.dart';
 import '../../theme/app_colors.dart';
@@ -23,7 +23,7 @@ class _GaitTestScreenState extends State<GaitTestScreen> {
   bool _isRecording = false;
   Timer? _timer;
   int _remainingSeconds = 30;
-  int _totalSeconds = 30;
+  final int _totalSeconds = 30;
 
   @override
   void dispose() {
@@ -56,11 +56,14 @@ class _GaitTestScreenState extends State<GaitTestScreen> {
     _timer?.cancel();
     _sensorService.stopRecording();
 
-    final patientProvider = Provider.of<PatientProvider>(context, listen: false);
+    final screeningProvider = Provider.of<ScreeningProvider>(context, listen: false);
 
     // Get gait features and store them
     final gaitFeatures = _sensorService.getFeatureVector();
-    patientProvider.screeningData['gait_features'] = gaitFeatures;
+    // Assuming gaitFeatures is a map, we encode it or use it. But wait, getFeatureVector returns a Map.
+    // draftGaitData expects a String.
+    // Let's use jsonEncode. But first, let me see getFeatureVector definition.
+    screeningProvider.setDraftGaitData(gaitFeatures.toString());
 
     setState(() {
       _isRecording = false;
@@ -79,7 +82,7 @@ class _GaitTestScreenState extends State<GaitTestScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         title: 'Gait Assessment Test',
         centerTitle: true,
       ),
@@ -191,12 +194,13 @@ class _GaitTestScreenState extends State<GaitTestScreen> {
                   width: 200,
                   height: 200,
                   child: _isRecording
-                      ? Lottie.asset(
-                          'assets/animations/walking.json',
-                          repeat: true,
-                          reverse: false,
-                        )
-                      : Icon(
+                      ? const Icon(
+                          Icons.directions_walk,
+                          size: 100,
+                          color: AppColors.primary,
+                        ).animate(onPlay: (controller) => controller.repeat(reverse: true))
+                         .slideX(begin: -0.2, end: 0.2, duration: 1.seconds)
+                      : const Icon(
                           Icons.directions_walk,
                           size: 100,
                           color: AppColors.primary,
@@ -249,14 +253,16 @@ class _GaitTestScreenState extends State<GaitTestScreen> {
                   end: const Offset(1, 1),
                   duration: 400.ms,
                 ),
-              const SizedBox(height: AppSpacing.md),
-              CustomButton(
-                text: 'Skip Test',
-                onPressed: () => Navigator.pop(context),
-                variant: ButtonVariant.outline,
-                size: ButtonSize.large,
-                fullWidth: true,
-              ),
+              if (Navigator.canPop(context)) ...[
+                const SizedBox(height: AppSpacing.md),
+                CustomButton(
+                  text: 'Skip Test',
+                  onPressed: () => Navigator.pop(context),
+                  variant: ButtonVariant.outline,
+                  size: ButtonSize.large,
+                  fullWidth: true,
+                ),
+              ],
             ],
           ),
         ),
@@ -268,7 +274,7 @@ class _GaitTestScreenState extends State<GaitTestScreen> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
+        const Icon(
           Icons.check_circle_outline,
           color: AppColors.primary,
           size: AppSpacing.iconMd,

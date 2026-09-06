@@ -122,7 +122,7 @@ class GaitAnalyzer {
     // Lower angular velocity variance = better stability
     // Normalize: typical range 0-2 rad/s
     final stabilityScore = (100 - (stdDev / 2.0 * 100)).clamp(0.0, 100.0);
-    return stabilityScore as double;
+    return stabilityScore;
   }
 
   /// Detect acceleration peaks (useful for fall risk assessment)

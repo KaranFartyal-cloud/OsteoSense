@@ -1,10 +1,8 @@
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'package:flutter/material.dart';
 import '../models/patient.dart';
 import '../models/screening.dart';
-import '../utils/app_theme.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
@@ -62,7 +60,7 @@ class PDFService {
           children: [
             pw.Text(
               'JointSaathi',
-              style: pw.TextStyle(
+              style: const pw.TextStyle(
                 fontSize: 24,
                 fontWeight: pw.FontWeight.bold,
                 color: PdfColors.teal,
@@ -70,7 +68,7 @@ class PDFService {
             ),
             pw.Text(
               'Osteoarthritis Risk Screening Report',
-              style: pw.TextStyle(
+              style: const pw.TextStyle(
                 fontSize: 14,
                 fontWeight: pw.FontWeight.normal,
                 color: PdfColors.grey700,
@@ -82,7 +80,7 @@ class PDFService {
         pw.SizedBox(height: 8),
         pw.Text(
           'Report Generated: ${DateFormat('dd MMM yyyy, hh:mm a').format(DateTime.now())}',
-          style: pw.TextStyle(fontSize: 10, color: PdfColors.grey600),
+          style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey600),
         ),
       ],
     );
@@ -100,7 +98,7 @@ class PDFService {
         children: [
           pw.Text(
             'Patient Information',
-            style: pw.TextStyle(
+            style: const pw.TextStyle(
               fontSize: 16,
               fontWeight: pw.FontWeight.bold,
               color: PdfColors.teal,
@@ -129,7 +127,7 @@ class PDFService {
             width: 100,
             child: pw.Text(
               '$label:',
-              style: pw.TextStyle(
+              style: const pw.TextStyle(
                 fontWeight: pw.FontWeight.bold,
                 color: PdfColors.grey700,
               ),
@@ -138,7 +136,7 @@ class PDFService {
           pw.Expanded(
             child: pw.Text(
               value,
-              style: pw.TextStyle(color: PdfColors.grey900),
+              style: const pw.TextStyle(color: PdfColors.grey900),
             ),
           ),
         ],
@@ -173,7 +171,7 @@ class PDFService {
             children: [
               pw.Text(
                 'Risk Level:',
-                style: pw.TextStyle(
+                style: const pw.TextStyle(
                   fontSize: 14,
                   fontWeight: pw.FontWeight.bold,
                 ),
@@ -186,7 +184,7 @@ class PDFService {
                 ),
                 child: pw.Text(
                   (screening.riskLevel ?? 'low').toUpperCase(),
-                  style: pw.TextStyle(
+                  style: const pw.TextStyle(
                     color: PdfColors.white,
                     fontWeight: pw.FontWeight.bold,
                     fontSize: 14,
@@ -201,7 +199,7 @@ class PDFService {
             children: [
               pw.Text(
                 'Confidence:',
-                style: pw.TextStyle(
+                style: const pw.TextStyle(
                   fontSize: 14,
                   fontWeight: pw.FontWeight.bold,
                 ),
@@ -219,7 +217,7 @@ class PDFService {
           pw.SizedBox(height: 12),
           pw.Text(
             'Screening Date: ${DateFormat('dd MMM yyyy, hh:mm a').format(screening.screeningDate)}',
-            style: pw.TextStyle(fontSize: 12, color: PdfColors.grey600),
+            style: const pw.TextStyle(fontSize: 12, color: PdfColors.grey600),
           ),
         ],
       ),
@@ -240,7 +238,7 @@ class PDFService {
         children: [
           pw.Text(
             'Contributing Factors',
-            style: pw.TextStyle(
+            style: const pw.TextStyle(
               fontSize: 16,
               fontWeight: pw.FontWeight.bold,
               color: PdfColors.teal,
@@ -248,7 +246,7 @@ class PDFService {
           ),
           pw.SizedBox(height: 12),
           if (factors.isEmpty)
-            pw.Text('No specific factors identified', style: pw.TextStyle(color: PdfColors.grey600))
+            pw.Text('No specific factors identified', style: const pw.TextStyle(color: PdfColors.grey600))
           else
             pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -258,11 +256,11 @@ class PDFService {
                   child: pw.Row(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                      pw.Text('• ', style: pw.TextStyle(color: PdfColors.teal)),
+                      pw.Text('• ', style: const pw.TextStyle(color: PdfColors.teal)),
                       pw.Expanded(
                         child: pw.Text(
                           factor.trim(),
-                          style: pw.TextStyle(color: PdfColors.grey800),
+                          style: const pw.TextStyle(color: PdfColors.grey800),
                         ),
                       ),
                     ],
@@ -287,7 +285,7 @@ class PDFService {
         children: [
           pw.Text(
             'Doctor Recommendations',
-            style: pw.TextStyle(
+            style: const pw.TextStyle(
               fontSize: 16,
               fontWeight: pw.FontWeight.bold,
               color: PdfColors.blue,
@@ -296,7 +294,7 @@ class PDFService {
           pw.SizedBox(height: 12),
           pw.Text(
             screening.doctorRecommendations ?? 'No specific recommendations provided.',
-            style: pw.TextStyle(
+            style: const pw.TextStyle(
               fontSize: 12,
               color: PdfColors.grey800,
               height: 1.5,
@@ -315,17 +313,17 @@ class PDFService {
         pw.SizedBox(height: 16),
         pw.Text(
           'Screening conducted by: $workerName',
-          style: pw.TextStyle(fontSize: 12, color: PdfColors.grey600),
+          style: const pw.TextStyle(fontSize: 12, color: PdfColors.grey600),
         ),
         pw.SizedBox(height: 4),
         pw.Text(
           'This report is generated by JointSaathi - AI-assisted early detection for Osteoarthritis risk screening.',
-          style: pw.TextStyle(fontSize: 10, color: PdfColors.grey500),
+          style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey500),
         ),
         pw.SizedBox(height: 4),
         pw.Text(
           'For medical emergencies, please consult a healthcare professional immediately.',
-          style: pw.TextStyle(fontSize: 10, color: PdfColors.red700),
+          style: const pw.TextStyle(fontSize: 10, color: PdfColors.red700),
         ),
       ],
     );

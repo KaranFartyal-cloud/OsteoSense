@@ -3,9 +3,12 @@ class AppConstants {
   static const String appName = 'JointSaathi';
   static const String appVersion = '1.0.0';
   
-  // API Configuration (placeholder for future backend)
-  static const String baseUrl = 'https://api.jointsaathi.com';
-  static const String apiVersion = '/v1';
+  // API Configuration (environment-switchable for emulator/device)
+  static const String baseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'http://10.0.2.2:5000/api/v1',
+  );
+  // No longer need apiVersion separately since it's in baseUrl
   
   // Database
   static const String databaseName = 'joint_saathi.db';

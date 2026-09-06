@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:async';
+import 'dart:convert';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -47,6 +48,7 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE patients (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        server_id TEXT,
         name TEXT NOT NULL,
         age INTEGER NOT NULL,
         gender TEXT NOT NULL,
@@ -64,6 +66,7 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE screenings (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        server_id TEXT,
         patient_id INTEGER NOT NULL,
         user_id INTEGER NOT NULL,
         screening_date TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -244,7 +247,7 @@ class DatabaseHelper {
       'table_name': tableName,
       'record_id': recordId,
       'action': action,
-      'data': data.toString(),
+      'data': jsonEncode(data),
     });
   }
 

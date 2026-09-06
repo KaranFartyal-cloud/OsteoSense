@@ -7,7 +7,10 @@ import '../../providers/screening_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
+import '../../theme/app_motion.dart';
 import '../../widgets/common/index.dart';
+import 'package:animations/animations.dart';
+import 'patient_profile_screen.dart';
 
 class ReportsScreen extends StatefulWidget {
   const ReportsScreen({super.key});
@@ -25,75 +28,67 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         title: 'Analytics & Reports',
         centerTitle: false,
       ),
-      body: screeningProvider.isLoading
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 3,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        AppColors.primary,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  Text(
-                    'Loading analytics...',
-                    style: AppTypography.bodyMedium.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            )
-          : screeningProvider.screenings.isEmpty
-              ? _buildEmptyState()
-              : SingleChildScrollView(
-                  padding: const EdgeInsets.all(AppSpacing.screenPaddingLg),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Tab selector
-                      _buildTabSelector(),
-                      const SizedBox(height: AppSpacing.xl),
-
-                      // Overview tab
-                      if (_selectedTab == 0) ...[
-                        _buildRiskDistributionChart(screeningProvider)
-                            .animate()
-                            .fadeIn(duration: 400.ms),
+      body: AmbientBackground(
+        primaryColor: AppColors.primary,
+        secondaryColor: AppColors.accent,
+        child: AnimatedSwitcher(
+          duration: AppMotion.standard,
+          switchInCurve: AppMotion.curveCrossFade,
+          switchOutCurve: AppMotion.curveCrossFade,
+          transitionBuilder: (child, animation) =>
+              FadeTransition(opacity: animation, child: child),
+          child: screeningProvider.isLoading
+              // Skeleton shimmer — shaped like the real content
+              ? const SingleChildScrollView(
+                  key: ValueKey('skeleton'),
+                  child: SkeletonDashboard(),
+                )
+              : screeningProvider.screenings.isEmpty
+                  ? _buildEmptyState()
+                  : SingleChildScrollView(
+                    padding: const EdgeInsets.all(AppSpacing.screenPaddingLg),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Tab selector
+                        _buildTabSelector(),
                         const SizedBox(height: AppSpacing.xl),
-                        _buildTrendChart(screeningProvider)
-                            .animate()
-                            .fadeIn(duration: 400.ms, delay: 200.ms),
-                        const SizedBox(height: AppSpacing.xl),
-                        _buildStatisticsCards(screeningProvider)
-                            .animate()
-                            .fadeIn(duration: 400.ms, delay: 400.ms),
+  
+                        // Overview tab
+                        if (_selectedTab == 0) ...[
+                          _buildRiskDistributionChart(screeningProvider)
+                              .animate()
+                              .fadeIn(duration: 400.ms),
+                          const SizedBox(height: AppSpacing.xl),
+                          _buildTrendChart(screeningProvider)
+                              .animate()
+                              .fadeIn(duration: 400.ms, delay: 200.ms),
+                          const SizedBox(height: AppSpacing.xl),
+                          _buildStatisticsCards(screeningProvider)
+                              .animate()
+                              .fadeIn(duration: 400.ms, delay: 400.ms),
+                        ],
+  
+                        // Timeline tab
+                        if (_selectedTab == 1)
+                          _buildScreeningTimeline(screeningProvider)
+                              .animate()
+                              .fadeIn(duration: 400.ms),
+  
+                        // Map tab (placeholder)
+                        if (_selectedTab == 2)
+                          _buildLocationView(screeningProvider)
+                              .animate()
+                              .fadeIn(duration: 400.ms),
                       ],
-
-                      // Timeline tab
-                      if (_selectedTab == 1)
-                        _buildScreeningTimeline(screeningProvider)
-                            .animate()
-                            .fadeIn(duration: 400.ms),
-
-                      // Map tab (placeholder)
-                      if (_selectedTab == 2)
-                        _buildLocationView(screeningProvider)
-                            .animate()
-                            .fadeIn(duration: 400.ms),
-                    ],
-                  ),
-                ),
+                    ),
+                  ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1, end: 0, duration: 400.ms),
+        ),
+      ),
     );
   }
 
@@ -308,8 +303,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
             height: 200,
             child: LineChart(
               LineChartData(
-                gridData: FlGridData(show: true),
-                titlesData: FlTitlesData(show: false),
+                gridData: const FlGridData(show: true),
+                titlesData: const FlTitlesData(show: false),
                 borderData: FlBorderData(show: false),
                 lineBarsData: [
                   LineChartBarData(
@@ -512,17 +507,25 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
           return Padding(
             padding: const EdgeInsets.only(bottom: AppSpacing.md),
-            child: CustomCard(
-              variant: screening.riskLevel == 'high'
-                  ? CardVariant.riskHigh
-                  : screening.riskLevel == 'medium'
-                      ? CardVariant.riskMedium
-                      : CardVariant.riskLow,
-              padding: const EdgeInsets.all(AppSpacing.cardPaddingMd),
-              onTap: () {
-                // Navigate to detailed report
-              },
-              isClickable: true,
+            child: OpenContainer<void>(
+              transitionType: ContainerTransitionType.fadeThrough,
+              transitionDuration: AppMotion.normal,
+              closedElevation: 0,
+              closedShape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+              ),
+              closedColor: Colors.transparent,
+              openColor: AppColors.background,
+              closedBuilder: (context, openContainer) {
+                return CustomCard(
+                  variant: screening.riskLevel == 'high'
+                      ? CardVariant.riskHigh
+                      : screening.riskLevel == 'medium'
+                          ? CardVariant.riskMedium
+                          : CardVariant.riskLow,
+                  padding: const EdgeInsets.all(AppSpacing.cardPaddingMd),
+                  onTap: openContainer,
+                  isClickable: true,
               child: Row(
                 children: [
                   Container(
@@ -555,15 +558,20 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       ],
                     ),
                   ),
-                  Icon(
+                  const Icon(
                     Icons.arrow_forward_ios,
                     size: 14,
                     color: AppColors.textTertiary,
                   ),
                 ],
               ),
-            ),
-          ).animate().slideX(
+            );
+          },
+          openBuilder: (context, closeContainer) {
+            return PatientProfileScreen(patientId: screening.patientId!);
+          },
+        ),
+      ).animate().slideX(
             begin: -0.2,
             end: 0,
             duration: 300.ms,
@@ -599,7 +607,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.map,
                     size: 64,
                     color: AppColors.textTertiary,

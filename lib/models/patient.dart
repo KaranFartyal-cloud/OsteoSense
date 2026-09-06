@@ -1,5 +1,6 @@
 class Patient {
   final int? id;
+  final String? serverId;
   final String name;
   final int age;
   final String gender;
@@ -13,6 +14,7 @@ class Patient {
 
   Patient({
     this.id,
+    this.serverId,
     required this.name,
     required this.age,
     required this.gender,
@@ -29,6 +31,7 @@ class Patient {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'server_id': serverId,
       'name': name,
       'age': age,
       'gender': gender,
@@ -45,6 +48,7 @@ class Patient {
   factory Patient.fromMap(Map<String, dynamic> map) {
     return Patient(
       id: map['id'] as int?,
+      serverId: map['server_id'] as String?,
       name: map['name'] as String,
       age: map['age'] as int,
       gender: map['gender'] as String,
@@ -60,6 +64,7 @@ class Patient {
 
   Patient copyWith({
     int? id,
+    String? serverId,
     String? name,
     int? age,
     String? gender,
@@ -73,6 +78,7 @@ class Patient {
   }) {
     return Patient(
       id: id ?? this.id,
+      serverId: serverId ?? this.serverId,
       name: name ?? this.name,
       age: age ?? this.age,
       gender: gender ?? this.gender,

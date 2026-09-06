@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_colors.dart';
-import '../theme/app_typography.dart';
 import '../theme/app_spacing.dart';
 
 class AppTheme {
@@ -18,24 +17,34 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     primaryColor: AppColors.primary,
-    colorScheme: ColorScheme.light(
+    colorScheme: const ColorScheme.light(
       primary: AppColors.primary,
       secondary: AppColors.accent,
       surface: AppColors.surface,
-      background: AppColors.background,
       error: AppColors.error,
     ),
     scaffoldBackgroundColor: AppColors.background,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: AppColors.primary,
-      foregroundColor: AppColors.surface,
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.surface,
+      foregroundColor: AppColors.textPrimary,
       elevation: 0,
+      scrolledUnderElevation: 1,
+      shadowColor: AppColors.border,
+      surfaceTintColor: Colors.transparent,
+      titleTextStyle: GoogleFonts.inter(
+        color: AppColors.textPrimary,
+        fontSize: 17,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.3,
+      ),
+      iconTheme: const IconThemeData(color: AppColors.textPrimary),
     ),
     cardTheme: CardThemeData(
       color: AppColors.surface,
-      elevation: 2,
+      elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
+        side: const BorderSide(color: AppColors.border, width: 1),
       ),
     ),
     textTheme: TextTheme(
@@ -129,7 +138,7 @@ class AppTheme {
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: AppColors.primary,
-        side: BorderSide(color: AppColors.primary),
+        side: const BorderSide(color: AppColors.primary),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
@@ -147,19 +156,19 @@ class AppTheme {
       fillColor: AppColors.surfaceVariant,
       contentPadding: const EdgeInsets.all(16),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.border),
+        borderSide: const BorderSide(color: AppColors.border),
         borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.primary, width: 2),
+        borderSide: const BorderSide(color: AppColors.primary, width: 2),
         borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
       ),
       errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.error),
+        borderSide: const BorderSide(color: AppColors.error),
         borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.error, width: 2),
+        borderSide: const BorderSide(color: AppColors.error, width: 2),
         borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
       ),
       labelStyle: GoogleFonts.inter(
@@ -171,7 +180,7 @@ class AppTheme {
         fontSize: 14,
       ),
     ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: AppColors.surface,
       selectedItemColor: AppColors.primary,
       unselectedItemColor: AppColors.textSecondary,
@@ -189,24 +198,34 @@ class AppTheme {
   static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     primaryColor: AppColors.primary,
-    colorScheme: ColorScheme.dark(
+    colorScheme: const ColorScheme.dark(
       primary: AppColors.primary,
       secondary: AppColors.accent,
       surface: AppColors.surfaceDark,
-      background: AppColors.backgroundDark,
       error: AppColors.error,
     ),
     scaffoldBackgroundColor: AppColors.backgroundDark,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: AppColors.primaryDark,
-      foregroundColor: AppColors.surfaceDark,
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.surfaceDark,
+      foregroundColor: AppColors.textPrimaryDark,
       elevation: 0,
+      scrolledUnderElevation: 1,
+      shadowColor: AppColors.borderDark,
+      surfaceTintColor: Colors.transparent,
+      titleTextStyle: GoogleFonts.inter(
+        color: AppColors.textPrimaryDark,
+        fontSize: 17,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.3,
+      ),
+      iconTheme: const IconThemeData(color: AppColors.textPrimaryDark),
     ),
     cardTheme: CardThemeData(
       color: AppColors.surfaceDark,
-      elevation: 2,
+      elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
+        side: const BorderSide(color: AppColors.borderDark, width: 1),
       ),
     ),
     textTheme: TextTheme(
@@ -300,7 +319,7 @@ class AppTheme {
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: AppColors.primary,
-        side: BorderSide(color: AppColors.primary),
+        side: const BorderSide(color: AppColors.primary),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
@@ -318,19 +337,19 @@ class AppTheme {
       fillColor: AppColors.surfaceVariantDark,
       contentPadding: const EdgeInsets.all(16),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.borderDark),
+        borderSide: const BorderSide(color: AppColors.borderDark),
         borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.primaryLight, width: 2),
+        borderSide: const BorderSide(color: AppColors.primaryLight, width: 2),
         borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
       ),
       errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.error),
+        borderSide: const BorderSide(color: AppColors.error),
         borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.error, width: 2),
+        borderSide: const BorderSide(color: AppColors.error, width: 2),
         borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
       ),
       labelStyle: GoogleFonts.inter(
@@ -342,7 +361,7 @@ class AppTheme {
         fontSize: 14,
       ),
     ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: AppColors.surfaceDark,
       selectedItemColor: AppColors.primaryLight,
       unselectedItemColor: AppColors.textSecondaryDark,
@@ -350,7 +369,7 @@ class AppTheme {
       showUnselectedLabels: true,
       elevation: 8,
     ),
-    dividerTheme: DividerThemeData(
+    dividerTheme: const DividerThemeData(
       color: AppColors.dividerDark,
       thickness: 1,
       space: 8,

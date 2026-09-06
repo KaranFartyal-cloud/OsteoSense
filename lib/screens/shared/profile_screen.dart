@@ -91,7 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 24),
               CircleAvatar(
                 radius: 48,
-                backgroundColor: AppTheme.primaryColor.withOpacity(0.2),
+                backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.2),
                 child: Text(
                   user?.fullName.substring(0, 1).toUpperCase() ?? 'U',
                   style: TextStyle(

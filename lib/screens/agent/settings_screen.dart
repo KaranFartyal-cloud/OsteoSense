@@ -21,7 +21,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         title: 'Settings',
         centerTitle: false,
       ),
@@ -125,11 +125,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 isDanger: true,
                 onTap: () => _showLogoutDialog(context),
               ),
-            ]).animate().fadeIn(duration: 300.ms, delay: 400.ms),
-            const SizedBox(height: AppSpacing.xl),
+            ]).animate().fadeIn(duration: 400.ms, delay: 300.ms),
+            const SizedBox(height: AppSpacing.xxl),
           ],
         ),
-      ),
+      ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1, end: 0, duration: 400.ms),
     );
   }
 
@@ -209,7 +209,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ],
                 ),
               ),
-              Icon(
+              const Icon(
                 Icons.arrow_forward_ios,
                 size: 14,
                 color: AppColors.textTertiary,
@@ -258,7 +258,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: AppColors.primary,
+            activeThumbColor: AppColors.primary,
           ),
         ],
       ),
@@ -266,8 +266,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildDivider() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.cardPaddingMd),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.cardPaddingMd),
       child: Divider(
         color: AppColors.border,
         height: 1,

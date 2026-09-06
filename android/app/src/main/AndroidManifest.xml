@@ -60,5 +60,10 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+            
+        <!-- Disable Impeller to fix custom shader screen mirroring bugs in liquid_glass_bar -->
+        <meta-data
+            android:name="io.flutter.app.android.EnableImpeller"
+            android:value="false" />
     </application>
 </manifest>

@@ -74,6 +74,9 @@ dependencies:
   # UI Utilities
   cupertino_icons: ^1.0.6
   permission_handler: ^11.1.0
+  animations: ^3.0.0
+  confetti: ^0.7.0
+  path_provider: any
 
 dev_dependencies:
   flutter_test:
@@ -83,7 +86,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
-  
+
   assets:
     - assets/images/
     - assets/icons/

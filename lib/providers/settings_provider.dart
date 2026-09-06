@@ -71,7 +71,11 @@ class SettingsProvider with ChangeNotifier {
   Future<void> checkConnectivity() async {
     try {
       final connectivity = Connectivity();
-      final results = await connectivity.checkConnectivity();
+      // Added a timeout because connectivity_plus checkConnectivity() can hang indefinitely on some Android emulators
+      final results = await connectivity.checkConnectivity().timeout(
+        const Duration(seconds: 2),
+        onTimeout: () => ConnectivityResult.none, // fallback to none if it hangs
+      );
 
       // Handle both single ConnectivityResult and List<ConnectivityResult>
       if (results is List<ConnectivityResult>) {
@@ -82,7 +86,7 @@ class SettingsProvider with ChangeNotifier {
           _connectionStatus = ConnectivityResult.none;
         }
       } else {
-        _connectionStatus = results as ConnectivityResult;
+        _connectionStatus = results;
       }
 
       notifyListeners();
@@ -140,7 +144,7 @@ class SettingsProvider with ChangeNotifier {
           result = ConnectivityResult.none;
         }
       } else {
-        result = results as ConnectivityResult;
+        result = results;
       }
       
       _connectionStatus = result;

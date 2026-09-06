@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
+import '../../theme/app_motion.dart';
 
 enum ButtonVariant {
   primary,
@@ -28,6 +29,7 @@ class CustomButton extends StatefulWidget {
   final Widget? icon;
   final Widget? trailingIcon;
   final bool disabled;
+  final bool showScaleFeedback;
 
   const CustomButton({
     super.key,
@@ -40,6 +42,7 @@ class CustomButton extends StatefulWidget {
     this.icon,
     this.trailingIcon,
     this.disabled = false,
+    this.showScaleFeedback = true,
   });
 
   @override
@@ -47,38 +50,53 @@ class CustomButton extends StatefulWidget {
 }
 
 class _CustomButtonState extends State<CustomButton>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _scaleController;
   late Animation<double> _scaleAnimation;
+  late AnimationController _shimmerController;
+  bool _isPressed = false;
 
   @override
   void initState() {
     super.initState();
     _scaleController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 100),
+      duration: AppMotion.fast,
     );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
-      CurvedAnimation(parent: _scaleController, curve: Curves.easeInOut),
+    _scaleAnimation = Tween<double>(begin: 1.0, end: widget.showScaleFeedback ? AppMotion.pressScale : 1.0).animate(
+      CurvedAnimation(parent: _scaleController, curve: AppMotion.curvePress),
+    );
+    _shimmerController = AnimationController(
+      vsync: this,
+      duration: AppMotion.slow,
     );
   }
 
   @override
   void dispose() {
     _scaleController.dispose();
+    _shimmerController.dispose();
     super.dispose();
   }
 
   void _handleTapDown(TapDownDetails details) {
-    _scaleController.forward();
+    if (widget.onPressed != null && !widget.disabled && !widget.isLoading) {
+      _scaleController.forward();
+      setState(() => _isPressed = true);
+      if (widget.variant == ButtonVariant.primary) {
+        _shimmerController.forward(from: 0);
+      }
+    }
   }
 
   void _handleTapUp(TapUpDetails details) {
     _scaleController.reverse();
+    setState(() => _isPressed = false);
   }
 
   void _handleTapCancel() {
     _scaleController.reverse();
+    setState(() => _isPressed = false);
   }
 
   @override
@@ -132,6 +150,9 @@ class _CustomButtonState extends State<CustomButton>
       ],
     );
 
+    // Build decoration based on variant
+    final decoration = _buildDecoration(colors, isEnabled, height, padding);
+
     if (widget.variant == ButtonVariant.ghost) {
       return Material(
         color: Colors.transparent,
@@ -139,7 +160,7 @@ class _CustomButtonState extends State<CustomButton>
           onTap: isEnabled ? widget.onPressed : null,
           onTapDown: isEnabled ? _handleTapDown : null,
           onTapUp: isEnabled ? _handleTapUp : null,
-          onTapCancel: _handleTapCancel,
+          onTapCancel: isEnabled ? _handleTapCancel : null,
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
           child: Container(
             height: height,
@@ -151,33 +172,92 @@ class _CustomButtonState extends State<CustomButton>
     }
 
     return Material(
-      color: isEnabled ? colors.backgroundColor : colors.disabledBackgroundColor,
+      color: Colors.transparent,
       borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-      elevation: isEnabled ? AppSpacing.elevationSm : 0,
       child: InkWell(
         onTap: isEnabled ? widget.onPressed : null,
         onTapDown: isEnabled ? _handleTapDown : null,
         onTapUp: isEnabled ? _handleTapUp : null,
-        onTapCancel: _handleTapCancel,
+        onTapCancel: isEnabled ? _handleTapCancel : null,
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
         splashColor: colors.splashColor,
         highlightColor: colors.highlightColor,
-        child: Container(
+        child: Ink(
           height: height,
           padding: padding,
-          decoration: widget.variant == ButtonVariant.outline
-              ? BoxDecoration(
-                  border: Border.all(
-                    color: isEnabled ? colors.borderColor : colors.disabledBorderColor,
-                    width: 1.5,
-                  ),
-                  borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-                )
-              : null,
+          decoration: decoration,
           child: Center(child: buttonContent),
         ),
       ),
-    ).animate().fadeIn(duration: 300.ms);
+    ).animate().fadeIn(duration: AppMotion.fast);
+  }
+
+  BoxDecoration _buildDecoration(_ButtonColors colors, bool isEnabled, double height, EdgeInsets padding) {
+    if (!isEnabled) {
+      return BoxDecoration(
+        color: colors.disabledBackgroundColor,
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+        border: widget.variant == ButtonVariant.outline
+            ? Border.all(color: colors.disabledBorderColor, width: 1.5)
+            : null,
+      );
+    }
+
+    switch (widget.variant) {
+      case ButtonVariant.primary:
+        return BoxDecoration(
+          gradient: AppColors.primaryGradient,
+          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primary.withValues(alpha: 0.3),
+              offset: const Offset(0, 4),
+              blurRadius: 12,
+              spreadRadius: -2,
+            ),
+            if (_isPressed)
+              BoxShadow(
+                color: AppColors.primary.withValues(alpha: 0.4),
+                offset: const Offset(0, 2),
+                blurRadius: 8,
+              ),
+          ],
+        );
+      case ButtonVariant.secondary:
+        return BoxDecoration(
+          gradient: AppColors.accentGradient,
+          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.accent.withValues(alpha: 0.3),
+              offset: const Offset(0, 4),
+              blurRadius: 12,
+              spreadRadius: -2,
+            ),
+          ],
+        );
+      case ButtonVariant.outline:
+        return BoxDecoration(
+          color: AppColors.primary.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+          border: Border.all(color: colors.borderColor, width: 1.5),
+        );
+      case ButtonVariant.ghost:
+        return const BoxDecoration();
+      case ButtonVariant.danger:
+        return BoxDecoration(
+          color: colors.backgroundColor,
+          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.error.withValues(alpha: 0.3),
+              offset: const Offset(0, 4),
+              blurRadius: 12,
+              spreadRadius: -2,
+            ),
+          ],
+        );
+    }
   }
 
   _ButtonColors _getButtonColors() {
@@ -188,8 +268,8 @@ class _CustomButtonState extends State<CustomButton>
           disabledBackgroundColor: AppColors.textHint,
           textColor: Colors.white,
           disabledTextColor: Colors.white,
-          splashColor: AppColors.primaryLight.withOpacity(0.3),
-          highlightColor: AppColors.primaryDark.withOpacity(0.2),
+          splashColor: AppColors.primaryLight.withValues(alpha: 0.3),
+          highlightColor: AppColors.primaryDark.withValues(alpha: 0.2),
           borderColor: AppColors.primary,
           disabledBorderColor: AppColors.textHint,
         );
@@ -199,8 +279,8 @@ class _CustomButtonState extends State<CustomButton>
           disabledBackgroundColor: AppColors.textHint,
           textColor: Colors.white,
           disabledTextColor: Colors.white,
-          splashColor: AppColors.accentLight.withOpacity(0.3),
-          highlightColor: AppColors.accentDark.withOpacity(0.2),
+          splashColor: AppColors.accentLight.withValues(alpha: 0.3),
+          highlightColor: AppColors.accentDark.withValues(alpha: 0.2),
           borderColor: AppColors.accent,
           disabledBorderColor: AppColors.textHint,
         );
@@ -210,8 +290,8 @@ class _CustomButtonState extends State<CustomButton>
           disabledBackgroundColor: Colors.transparent,
           textColor: AppColors.primary,
           disabledTextColor: AppColors.textHint,
-          splashColor: AppColors.primary.withOpacity(0.1),
-          highlightColor: AppColors.primary.withOpacity(0.05),
+          splashColor: AppColors.primary.withValues(alpha: 0.1),
+          highlightColor: AppColors.primary.withValues(alpha: 0.05),
           borderColor: AppColors.primary,
           disabledBorderColor: AppColors.textHint,
         );
@@ -221,8 +301,8 @@ class _CustomButtonState extends State<CustomButton>
           disabledBackgroundColor: Colors.transparent,
           textColor: AppColors.primary,
           disabledTextColor: AppColors.textHint,
-          splashColor: AppColors.primary.withOpacity(0.1),
-          highlightColor: AppColors.primary.withOpacity(0.05),
+          splashColor: AppColors.primary.withValues(alpha: 0.1),
+          highlightColor: AppColors.primary.withValues(alpha: 0.05),
           borderColor: Colors.transparent,
           disabledBorderColor: Colors.transparent,
         );
@@ -232,8 +312,8 @@ class _CustomButtonState extends State<CustomButton>
           disabledBackgroundColor: AppColors.textHint,
           textColor: Colors.white,
           disabledTextColor: Colors.white,
-          splashColor: AppColors.riskHighLight.withOpacity(0.3),
-          highlightColor: AppColors.riskHighDark.withOpacity(0.2),
+          splashColor: AppColors.riskHighLight.withValues(alpha: 0.3),
+          highlightColor: AppColors.riskHighDark.withValues(alpha: 0.2),
           borderColor: AppColors.error,
           disabledBorderColor: AppColors.textHint,
         );

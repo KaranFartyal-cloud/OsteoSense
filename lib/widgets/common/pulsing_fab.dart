@@ -37,9 +37,10 @@ class _PulsingFABState extends State<PulsingFAB>
       duration: const Duration(milliseconds: 1500),
     )..repeat();
 
-    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.15).animate(
+    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.2).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
+    print('PulsingFAB: Animation started (looping)');
   }
 
   @override
@@ -64,7 +65,7 @@ class _PulsingFABState extends State<PulsingFAB>
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: (widget.backgroundColor ?? AppColors.primary)
-                      .withOpacity(0.2),
+                      .withValues(alpha: (1.2 - _pulseAnimation.value).clamp(0.0, 0.2)),
                 ),
               ),
             );

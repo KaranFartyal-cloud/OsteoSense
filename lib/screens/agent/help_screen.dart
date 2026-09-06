@@ -70,7 +70,7 @@ class _HelpScreenState extends State<HelpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         title: 'Help & FAQ',
         centerTitle: false,
       ),
@@ -175,7 +175,7 @@ class _HelpScreenState extends State<HelpScreen> {
         Container(
           width: 32,
           height: 32,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: AppColors.primary,
             shape: BoxShape.circle,
           ),
@@ -297,7 +297,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   color: AppColors.accent.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.headset_mic,
                   color: AppColors.accent,
                 ),

@@ -9,6 +9,7 @@ import '../../theme/app_colors.dart';
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
 import '../../widgets/common/index.dart';
+import '../../widgets/common/pulsing_dot.dart';
 
 class PatientProfileScreen extends StatefulWidget {
   final int patientId;
@@ -62,7 +63,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 60,
                     height: 60,
                     child: CircularProgressIndicator(
@@ -87,7 +88,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.person_off,
                         size: 64,
                         color: AppColors.textTertiary,
@@ -146,7 +147,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                       ],
                     ),
                   ),
-                ),
+                ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1, end: 0, duration: 400.ms),
     );
   }
 
@@ -159,15 +160,11 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
       padding: const EdgeInsets.all(AppSpacing.cardPaddingLg),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 40,
-            backgroundColor: AppColors.getRiskSurfaceColor(riskLevel),
-            child: Text(
-              patient.name.substring(0, 1).toUpperCase(),
-              style: AppTypography.displaySmall.copyWith(
-                color: riskColor,
-                fontWeight: FontWeight.bold,
-              ),
+          Hero(
+            tag: 'avatar_${patient.id}',
+            child: GradientAvatar(
+              name: patient.name,
+              size: 80,
             ),
           ),
           const SizedBox(width: AppSpacing.lg),
@@ -182,17 +179,31 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xs),
-                Text(
-                  '${patient.age} years • ${patient.gender}',
-                  style: AppTypography.bodyMedium.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
+                Row(
+                  children: [
+                    const PulsingDot(color: Colors.green),
+                    const SizedBox(width: AppSpacing.xs),
+                    Text('Active', style: AppTypography.bodySmall.copyWith(
+                      color: Colors.green, fontWeight: FontWeight.w600,
+                    )),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.xs),
+                Row(
+                  children: [
+                    Text(
+                      '${patient.age} years • ${patient.gender}',
+                      style: AppTypography.bodyMedium.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
                 ),
                 if (patient.village != null) ...[
                   const SizedBox(height: AppSpacing.xs),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.location_on,
                         size: AppSpacing.iconSm,
                         color: AppColors.textSecondary,
@@ -215,31 +226,34 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
             ),
           ),
           if (patient.lastScreening != null)
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.md,
-                vertical: AppSpacing.sm,
-              ),
-              decoration: BoxDecoration(
-                color: AppColors.getRiskSurfaceColor(riskLevel),
-                borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    riskLevel.toUpperCase(),
-                    style: AppTypography.labelSmall.copyWith(
-                      color: riskColor,
-                      fontWeight: FontWeight.bold,
+            Hero(
+              tag: 'risk_badge_${patient.id}',
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md,
+                  vertical: AppSpacing.sm,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.getRiskSurfaceColor(riskLevel),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      riskLevel.toUpperCase(),
+                      style: AppTypography.labelSmall.copyWith(
+                        color: riskColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '${(patient.lastScreening!.confidence ?? 0).toInt()}%',
-                    style: AppTypography.labelSmall.copyWith(
-                      color: riskColor,
+                    Text(
+                      '${(patient.lastScreening!.confidence ?? 0).toInt()}%',
+                      style: AppTypography.labelSmall.copyWith(
+                        color: riskColor,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
         ],
@@ -300,7 +314,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
         padding: const EdgeInsets.all(AppSpacing.cardPaddingLg),
         child: Column(
           children: [
-            Icon(
+            const Icon(
               Icons.assignment,
               size: 48,
               color: AppColors.textTertiary,
@@ -381,7 +395,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      DateFormat('MMM dd, yyyy').format(screening.screeningDate ?? DateTime.now()),
+                      DateFormat('MMM dd, yyyy').format(screening.screeningDate),
                       style: AppTypography.titleSmall.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -430,7 +444,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
           ),
 
           // View details arrow
-          Icon(
+          const Icon(
             Icons.arrow_forward_ios,
             size: 14,
             color: AppColors.textTertiary,

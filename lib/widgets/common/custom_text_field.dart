@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_spacing.dart';
@@ -28,6 +29,8 @@ class CustomTextField extends StatefulWidget {
   final Function(String)? onSubmitted;
   final TextFieldVariant variant;
   final bool autofocus;
+  final String? Function(String?)? validator;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextField({
     super.key,
@@ -48,6 +51,8 @@ class CustomTextField extends StatefulWidget {
     this.onSubmitted,
     this.variant = TextFieldVariant.default_,
     this.autofocus = false,
+    this.validator,
+    this.inputFormatters,
   });
 
   @override
@@ -104,7 +109,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               _isFocused = hasFocus;
             });
           },
-          child: TextField(
+          child: TextFormField(
             controller: _controller,
             obscureText: _obscureText,
             enabled: widget.enabled,
@@ -113,8 +118,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
             maxLines: widget.maxLines,
             maxLength: widget.maxLength,
             autofocus: widget.autofocus,
+            validator: widget.validator,
+            inputFormatters: widget.inputFormatters,
             onChanged: widget.onChanged,
-            onSubmitted: widget.onSubmitted,
+            onFieldSubmitted: widget.onSubmitted,
             style: AppTypography.bodyMedium.copyWith(
               color: widget.enabled ? AppColors.textPrimary : AppColors.textTertiary,
             ),
